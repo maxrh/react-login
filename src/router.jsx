@@ -9,6 +9,7 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import App from "./App";
 import Home from "./views/Home";
+import RequireAuth from "./components/RequireAuth";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -16,7 +17,11 @@ export const router = createBrowserRouter(
             <Route path="/" element={<Home />} />
             <Route 
                 path="about" 
-                element={<About />} 
+                element={
+                    <RequireAuth>
+                        <About />
+                    </RequireAuth>
+                } 
                 loader={aboutLoader} 
             />
             <Route 

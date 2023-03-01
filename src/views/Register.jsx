@@ -1,12 +1,16 @@
-import { Form } from 'react-router-dom';
-import { useState } from 'react';
+import { Form, useNavigate } from 'react-router-dom';
+import { useState} from 'react';
 import { createErrorsObject } from '../helpers/errorhandling';
 import axios from 'axios';
 import * as z from 'zod';
+import useAuth from '../hooks/useAuth';
 
 const Register = () => {
 
     const [errors, setErrors] = useState(null);
+    const navigate = useNavigate();
+    const auth = useAuth();
+
 
     const schema = z
         .object({
@@ -27,33 +31,20 @@ const Register = () => {
         console.log(values, "values");
 
         let validated = schema.safeParse(values)
-        console.log(validated, "validated");
 
         if (validated.success) {
             let response = await axios.post("http://localhost:4000/register", { 
                 email: validated.data.email,
                 password: validated.data.password
             });
+            
+            auth.signin(response.data, () => navigate("/"));
 
-            console.log(response.data);
+            // console.log(response.data);
            
         } else {
             setErrors(createErrorsObject(validated.error));
         }
-
-
-        // try {
-        //     let validatedValues = schema.safeParse(values);
-        //     let response = await axios.post("http://localhost:4000/register", { 
-        //         validatedValues,
-        //     });
-
-        //     console.log(response.data, "response.data");
-
-        // } catch (error) {
-        //     let errors = createErrorsObject(json({ error }));
-        //     console.log(errors);
-        // }
 
     };
 
@@ -93,7 +84,9 @@ const Register = () => {
                 </div>
 
                 <button type="submit">Create account</button>
-               
+
+                {errors?.exists && <p>{errors.exists}</p>}
+
             </Form>
     
         </section>

@@ -12,8 +12,9 @@ const AuthStatus = () => {
 
     return !auth.user ? ( 
         <button onClick={() => navigate("/login")}>Login</button>
-
-     ) : ( <p>Welcome! <button onClick={handleSignout}>Logout</button>{" "}</p> );
+    ) : (
+        <p>Welcome! <button onClick={handleSignout}>Logout</button>{" "}</p> 
+    );
 }
  
 export default AuthStatus;

@@ -16,7 +16,7 @@ import Secrets, {
 } from "./views/Secrets";
 import Login from "./views/Login";
 import Register from "./views/Register";
-import Profile, { profileAction } from "./views/Profile";
+import Profile, { profileLoader, profileAction } from "./views/Profile";
 import Error from "./views/Error";
 import RequireAuth from "./components/RequireAuth";
 import useAuth from './hooks/useAuth';
@@ -65,6 +65,7 @@ function App() {
                             <Profile />
                         </RequireAuth>
                     } 
+                    loader={profileLoader(user)}
                     action={profileAction(user, updateUser)}
                 />
             </Route>          

@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
 
     const signin = (newUser, callback) => {
         let userObj = {
-            ...newUser.user,
+            id: newUser.user.id,
             accessToken: newUser.accessToken,
         }
         setUser(userObj);

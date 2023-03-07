@@ -1,8 +1,16 @@
-import { useActionData, Form } from "react-router-dom";
+import { useLoaderData, useActionData, Form } from "react-router-dom";
 import axios from "axios";
 import * as z from "zod";
 import { createErrorsObject } from "../helpers/errorhandling"; 
-import useAuth from "../hooks/useAuth";
+
+export const profileLoader = (user) => async () => {
+    let response = await axios.get("http://localhost:4000/users/" + user.id, {
+        headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+        },
+    });
+    return await response.data;
+};
 
 export const profileAction = (user, updateUser) => async ({ request }) => {
     let formData = await request.formData();
@@ -33,7 +41,7 @@ export const profileAction = (user, updateUser) => async ({ request }) => {
 };
 
 const Profile = () => {
-    const { user } = useAuth();
+    const user = useLoaderData();
     const errors = useActionData();
     
     return ( 

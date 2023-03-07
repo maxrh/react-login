@@ -15,30 +15,24 @@ export const action = async ({ request }) => {
     let schema = z.object({
         sentence: z
             .string({ required_error: "Sentence is required!" })
-            .min(3, { message: "Sentence must be at least 3 characters long!" })
-
+            .min(3, { message: "Sentence must be at least 3 characters long!" }),
     });
 
-    try {
+    let { succes, data, error } = schema.safeParse(values);
 
-        let validatedValues = schema.parse(values);
-
-        await axios.post("http://localhost:4000/statements", validatedValues);
+    if ( succes ) {
+        await axios.post("http://localhost:4000/statements", data);
         return null;
-
-    } catch ( error ) {
-
-        return json({ error })
-
+    } else {
+        return createErrorsObject(error);
     }
+        
 };
 
 const Statements = () => {
     
     const statements = useLoaderData();
-    const data = useActionData();
-
-    let errors = createErrorsObject(data);
+    const errors = useActionData();
 
     return (
     

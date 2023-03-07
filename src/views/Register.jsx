@@ -11,7 +11,6 @@ const Register = () => {
     const navigate = useNavigate();
     const auth = useAuth();
 
-
     const schema = z
         .object({
             email: z.string().email(),

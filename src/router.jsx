@@ -4,7 +4,11 @@ import {
     Route 
 } from "react-router-dom";
 import About, { loader as aboutLoader } from "./views/About";
-import Statements, { loader as statementsLoader, action as statementsAction } from "./views/Statements";
+import Statements, { 
+    loader as statementsLoader, 
+    action as statementsAction 
+} from "./views/Statements";
+import Secrets, { secretsLoader } from "./views/Secrets";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import App from "./App";
@@ -17,11 +21,7 @@ export const router = createBrowserRouter(
             <Route path="/" element={<Home />} />
             <Route 
                 path="about" 
-                element={
-                    <RequireAuth>
-                        <About />
-                    </RequireAuth>
-                } 
+                element={<About />} 
                 loader={aboutLoader} 
             />
             <Route 
@@ -33,12 +33,19 @@ export const router = createBrowserRouter(
             <Route 
                 path="login" 
                 element={<Login />} 
-                loader={statementsLoader} 
             />
             <Route 
                 path="register" 
                 element={<Register />} 
-                loader={statementsLoader} 
+            />
+            <Route 
+                path="secrets" 
+                element={
+                    <RequireAuth>
+                        <Secrets />
+                    </RequireAuth>
+                } 
+                loader={secretsLoader} 
             />
         </Route>          
     )

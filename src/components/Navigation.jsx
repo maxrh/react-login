@@ -7,11 +7,11 @@ const Navigation = () => {
     return ( 
         <nav>
             <Link to="/">Home</Link>{" "}
-            <Link to="about">About</Link>{" "}
-            <Link to="statements">Statements</Link>{" "}
-            {auth.user && <Link to="/">Secrets</Link>}{" "}
-            <Link to="register">Register</Link>{" "}
-            <Link to="login">Login</Link>
+            <Link to="/about">About</Link>{" "}
+            <Link to="/statements">Statements</Link>{" "}
+            {auth.user && <Link to="/secrets">Secrets</Link>}{" "}
+            <Link to="/register">Register</Link>{" "}
+            <Link to="/login">Login</Link>
         </nav>
     );
 }

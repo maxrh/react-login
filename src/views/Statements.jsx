@@ -12,27 +12,39 @@ export const action = async ({ request }) => {
     let formData = await request.formData();
     let values = Object.fromEntries( await formData );
 
-    let schema = z.object({
-        sentence: z
-            .string({ required_error: "Sentence is required!" })
-            .min(3, { message: "Sentence must be at least 3 characters long!" }),
-    });
-
-    let { success, data, error } = schema.safeParse(values);
-
-    if ( success ) {
-        await axios.post("http://localhost:4000/statements", data);
+    if ( values._action === "delete" ) {
+        await axios.delete("http://localhost:4000/statements/" + values._id);
         return null;
     } else {
-        return createErrorsObject(error);
+        let schema = z.object({
+            sentence: z
+                .string({ required_error: "Sentence is required!" })
+                .min(3, { message: "Sentence must be at least 3 characters long!" }),
+        });
+
+        let { success, data, error } = schema.safeParse(values);
+
+        if ( success ) {
+            await axios.post("http://localhost:4000/statements", data);
+            return null;
+        } else {
+            return createErrorsObject(error);
+        }
     }
-        
 };
 
 const Statements = () => {
     
     const statements = useLoaderData();
     const errors = useActionData();
+
+    const handleConfirmation = (e) => {
+        if ( !confirm("Are you sure you want to delete this statement?") ) {
+            e.preventDefault();
+        } else {
+            return true;
+        }
+    };
 
     return (
     
@@ -41,8 +53,14 @@ const Statements = () => {
             <h1>Statements</h1>
 
             {statements.map((statement) => (
-                <div key={statement.id}>
+                <div key={statement.id} style={{ display: "flex", justifyContent: "center", gap: "1rem"}}>
                     <p>{statement.sentence}</p>
+                    <Form method="post" onSubmit={handleConfirmation}>
+                        <input type="hidden" name="_action" value="delete"/>
+                        <input type="hidden" name="_id" value={statement.id}/>
+
+                        <button>&times;</button>
+                    </Form>
                 </div>
             ))}
 

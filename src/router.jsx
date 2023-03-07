@@ -3,6 +3,7 @@ import {
     createRoutesFromElements, 
     Route 
 } from "react-router-dom";
+import Home from "./views/Home";
 import About, { loader as aboutLoader } from "./views/About";
 import Statements, { 
     loader as statementsLoader, 
@@ -14,10 +15,10 @@ import Secrets, {
 } from "./views/Secrets";
 import Login from "./views/Login";
 import Register from "./views/Register";
-import App from "./App";
-import Home from "./views/Home";
-import RequireAuth from "./components/RequireAuth";
+import Profile, { profileAction } from "./views/Profile";
 import Error from "./views/Error";
+import RequireAuth from "./components/RequireAuth";
+import App from "./App";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -51,6 +52,15 @@ export const router = createBrowserRouter(
                 } 
                 loader={secretsLoader}
                 action={secretsAction}
+            />
+            <Route 
+                path="profile" 
+                element={
+                    <RequireAuth>
+                        <Profile />
+                    </RequireAuth>
+                } 
+                action={profileAction}
             />
         </Route>          
     )

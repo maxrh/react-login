@@ -58,7 +58,7 @@ const Secrets = () => {
 
             <Form method="post">
 
-                <h4>Add a new secret</h4>
+                <h2>Add a new secret</h2>
                 <div className="form-group">
                     <label htmlFor="quote">Quote</label>
                     <input type="text" name="quote" id="quote"/>

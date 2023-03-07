@@ -20,6 +20,17 @@ const AuthProvider = ({ children }) => {
         callback();
     }
 
+    const updateUser = (newUser, callback) => {
+        let userObj = {
+            ...user,
+            ...newUser.user,
+        }
+        setUser(userObj);
+        Cookies.set("auth", JSON.stringify(userObj));
+
+        callback();
+    }
+
     const signout = (callback) => {
         setUser(null);
         Cookies.remove("auth");
@@ -28,7 +39,7 @@ const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ user, signin, signout }}>
+        <AuthContext.Provider value={{ user, signin, signout, updateUser }}>
             {children}
         </AuthContext.Provider>
     );

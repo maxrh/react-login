@@ -10,8 +10,8 @@ const Navigation = () => {
             <Link to="/about">About</Link>{" "}
             <Link to="/statements">Statements</Link>{" "}
             {auth.user && <Link to="/secrets">Secrets</Link>}{" "}
-            <Link to="/register">Register</Link>{" "}
-            <Link to="/login">Login</Link>
+            {!auth.user && <Link to="/register">Register</Link>}{" "}
+            {!auth.user && <Link to="/login">Login</Link>}{" "}
         </nav>
     );
 }

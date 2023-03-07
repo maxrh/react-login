@@ -8,16 +8,20 @@ import Statements, {
     loader as statementsLoader, 
     action as statementsAction 
 } from "./views/Statements";
-import Secrets, { secretsLoader } from "./views/Secrets";
+import Secrets, { 
+    secretsLoader, 
+    secretsAction 
+} from "./views/Secrets";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import App from "./App";
 import Home from "./views/Home";
 import RequireAuth from "./components/RequireAuth";
+import Error from "./views/Error";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route path="/" element={<App />}>
+        <Route path="/" element={<App />} errorElement={<Error />}>
             <Route path="/" element={<Home />} />
             <Route 
                 path="about" 
@@ -45,7 +49,8 @@ export const router = createBrowserRouter(
                         <Secrets />
                     </RequireAuth>
                 } 
-                loader={secretsLoader} 
+                loader={secretsLoader}
+                action={secretsAction}
             />
         </Route>          
     )

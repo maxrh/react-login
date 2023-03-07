@@ -17,8 +17,7 @@ const About = () => {
 
             {todos.map((todo) => (
                 <div key={todo.id}>
-                    <h2>{todo.title}</h2>
-                    <p>{todo.completed ? 'Completed' : 'Not completed'}</p>
+                    <p>{todo.title} - {todo.completed ? 'Completed' : 'Not completed'}</p>
                 </div>
             ))}
     

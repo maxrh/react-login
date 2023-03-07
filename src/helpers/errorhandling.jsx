@@ -3,6 +3,8 @@ export const createErrorsObject = (error) => {
             errorsObj[issue.path[0]] = issue.message;
             return errorsObj;
      }, {});
+
+     console.log(errors);
     
     return errors;
 };

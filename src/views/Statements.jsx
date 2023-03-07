@@ -1,4 +1,4 @@
-import { useLoaderData, useActionData, Form, json } from 'react-router-dom';
+import { useLoaderData, useActionData, Form } from 'react-router-dom';
 import { createErrorsObject } from '../helpers/errorhandling';
 import axios from 'axios';
 import * as z from 'zod';
@@ -18,9 +18,9 @@ export const action = async ({ request }) => {
             .min(3, { message: "Sentence must be at least 3 characters long!" }),
     });
 
-    let { succes, data, error } = schema.safeParse(values);
+    let { success, data, error } = schema.safeParse(values);
 
-    if ( succes ) {
+    if ( success ) {
         await axios.post("http://localhost:4000/statements", data);
         return null;
     } else {
@@ -42,7 +42,7 @@ const Statements = () => {
 
             {statements.map((statement) => (
                 <div key={statement.id}>
-                    <h2>{statement.sentence}</h2>
+                    <p>{statement.sentence}</p>
                 </div>
             ))}
 
@@ -50,16 +50,11 @@ const Statements = () => {
 
                 <h2>Add a new statement</h2>
                 <div className="form-group">
-                    <label htmlFor="sentence">Sentence </label>
-                    <input 
-                        type="text" 
-                        name="sentence"
-                    />
+                    <input type="text" name="sentence"/>
                     {errors?.sentence && <p>{errors.sentence}</p>}
                 </div>
-
                 <button type="submit">Add</button>
-               
+
             </Form>
     
         </section>

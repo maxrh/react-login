@@ -1,7 +1,13 @@
-import { useLoaderData, useActionData, Form } from 'react-router-dom';
+import { 
+    useLoaderData, 
+    useActionData, 
+    Form,
+    useSubmit,
+} from 'react-router-dom';
 import { createErrorsObject } from '../helpers/errorhandling';
 import axios from 'axios';
 import * as z from 'zod';
+import { toast } from 'react-toastify';
 
 export const loader = async () => {
     let response = await fetch('http://localhost:4000/statements');
@@ -34,17 +40,38 @@ export const action = async ({ request }) => {
 };
 
 const Statements = () => {
-    
     const statements = useLoaderData();
     const errors = useActionData();
+    const submit = useSubmit();
+
+    const handleDelete = (form) => {
+        toast.dismiss();
+        submit(form);
+    };
 
     const handleConfirmation = (e) => {
-        if ( !confirm("Are you sure you want to delete this statement?") ) {
-            e.preventDefault();
-        } else {
-            return true;
-        }
+        e.preventDefault();
+        let form = e.target;
+        toast(
+            <div>
+                <p>Are you sure you want to delete this statement?</p>
+                <button onClick={() => handleDelete(form)}>Delete</button>{" "}
+                <button onClick={() => toast.dismiss()}>Cancel</button>
+            </div>, {
+            autoClose: false,
+            closeButton: false,
+            closeOnClick: false,
+            draggable: false,
+        });
     };
+
+    // const handleConfirmation = (e) => {
+    //     if ( !confirm("Are you sure you want to delete this statement?") ) {
+    //         e.preventDefault();
+    //     } else {
+    //         return true;
+    //     }
+    // };
 
     return (
     

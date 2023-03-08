@@ -1,6 +1,8 @@
 import { Outlet, useNavigation } from 'react-router-dom';
 import AuthStatus from './AuthStatus';
 import Navigation from './Navigation';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../App.css';
 
 const Layout = () => {
@@ -19,6 +21,11 @@ const Layout = () => {
             <footer>
                 <p>Footer</p>
             </footer>
+            <ToastContainer 
+                position="top-center"
+                autoClose={5000}    
+                hideProgressBar={true}    
+            />
         </div>
     )
 }

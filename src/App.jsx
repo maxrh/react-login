@@ -23,8 +23,10 @@ import useAuth from './hooks/useAuth';
 import Layout from './components/Layout';
 
 function App() {
-    const { user, updateUser } = useAuth();
+    const { user } = useAuth();
 
+    console.log(user);
+    
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<Layout />} errorElement={<Error />}>
@@ -55,8 +57,8 @@ function App() {
                             <Secrets />
                         </RequireAuth>
                     } 
-                    loader={secretsLoader}
-                    action={secretsAction}
+                    loader={secretsLoader(user)}
+                    action={secretsAction(user)}
                 />
                 <Route 
                     path="profile" 
@@ -66,7 +68,7 @@ function App() {
                         </RequireAuth>
                     } 
                     loader={profileLoader(user)}
-                    action={profileAction(user, updateUser)}
+                    action={profileAction(user)}
                 />
             </Route>          
         )

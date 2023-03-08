@@ -23,6 +23,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors(null);
+
         const formData = new FormData(e.target);
         const values = Object.fromEntries(formData);
 
@@ -53,10 +54,7 @@ const Login = () => {
                 <h2>Login</h2>
                 <div className="form-group">
                     <label htmlFor="email">Email </label>
-                    <input 
-                        type="email" 
-                        name="email"
-                    />
+                    <input type="email" name="email" />
                     {errors?.email && <p>{errors.email}</p>}
                 </div>
                 <div className="form-group">

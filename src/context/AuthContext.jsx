@@ -20,15 +20,13 @@ const AuthProvider = ({ children }) => {
         callback();
     }
 
-    const updateUser = (newUser, callback) => {
+    const updateUser = (newUser) => {
         let userObj = {
             ...user,
             ...newUser.user,
         }
         setUser(userObj);
         Cookies.set("auth", JSON.stringify(userObj));
-
-        callback();
     }
 
     const signout = (callback) => {

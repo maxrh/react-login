@@ -25,20 +25,19 @@ const Login = () => {
         setErrors(null);
         const formData = new FormData(e.target);
         const values = Object.fromEntries(formData);
-        console.log(values, "values");
 
         let validated = schema.safeParse(values)
 
         if (validated.success) {
-            let response = await axios.post("http://localhost:4000/login", { 
-                email: validated.data.email,
-                password: validated.data.password
-            });
-            
-            auth.signin(response.data, () => navigate(from));
-
-            // console.log(response.data);
-           
+            try {
+                let response = await axios.post("http://localhost:4000/login", { 
+                    email: validated.data.email,
+                    password: validated.data.password
+                });
+                auth.signin(response.data, () => navigate(from));
+            } catch (error) {
+                setErrors({ status: error.response.data });
+            }
         } else {
             setErrors(createErrorsObject(validated.error));
         }
@@ -62,17 +61,14 @@ const Login = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password </label>
-                    <input 
-                        type="password" 
-                        name="password"
-                    />
+                    <input type="password" name="password" />
                     {errors?.password && <p>{errors.password}</p>}
                 </div>
 
+                {errors?.status && <p>{errors.status}</p>}
+
                 <button type="submit">Login</button>
 
-                {errors?.exists && <p>{errors.exists}</p>}
-                
                 <p>Don't have an account? <Link to="/register">Register</Link></p>
                
             </Form>

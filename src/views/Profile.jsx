@@ -1,7 +1,12 @@
-import { useLoaderData, useActionData, Form } from "react-router-dom";
+import { 
+    useLoaderData, 
+    useActionData, 
+    Form
+ } from "react-router-dom";
 import axios from "axios";
 import * as z from "zod";
 import { createErrorsObject } from "../helpers/errorhandling"; 
+import { toast } from "react-toastify";
 
 export const profileLoader = (user) => async () => {
     let response = await axios.get("http://localhost:4000/users/" + user.id, {
@@ -12,7 +17,7 @@ export const profileLoader = (user) => async () => {
     return await response.data;
 };
 
-export const profileAction = (user, updateUser) => async ({ request }) => {
+export const profileAction = (user) => async ({ request }) => {
     let formData = await request.formData();
     let values = Object.fromEntries( await formData );
 
@@ -27,13 +32,16 @@ export const profileAction = (user, updateUser) => async ({ request }) => {
     let { success, data, error } = schema.safeParse(values);
 
     if ( success ) {
-        let response = await axios.patch("http://localhost:4000/users/" + user.id, data, {
+        await axios.patch("http://localhost:4000/users/" + user.id, data, {
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 Authorization: `Bearer ${user.accessToken}`,
             },
         });
-        updateUser(await response.data);
+        toast("Profile updated successfully!", {
+            type: "success",
+            autoClose: 1500,
+        });
         return null;
     } else { 
         return createErrorsObject(error);
@@ -43,7 +51,7 @@ export const profileAction = (user, updateUser) => async ({ request }) => {
 const Profile = () => {
     const user = useLoaderData();
     const errors = useActionData();
-    
+   
     return ( 
         <section>
             <h1>Profile</h1>

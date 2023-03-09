@@ -1,11 +1,17 @@
+import { useEffect } from 'react';
 import { 
     Route,
+    matchRoutes,
     RouterProvider, 
     createBrowserRouter, 
-    createRoutesFromElements 
+    createRoutesFromElements,
+    useLocation,
+    useNavigationType,
 } from 'react-router-dom';
 import Home from "./views/Home";
-import About, { loader as aboutLoader } from "./views/About";
+import About, { 
+    loader as aboutLoader 
+} from "./views/About";
 import Statements, { 
     loader as statementsLoader, 
     action as statementsAction 
@@ -16,18 +22,40 @@ import Secrets, {
 } from "./views/Secrets";
 import Login from "./views/Login";
 import Register from "./views/Register";
-import Profile, { profileLoader, profileAction } from "./views/Profile";
+import Profile, { 
+    profileLoader, 
+    profileAction 
+} from "./views/Profile";
 import Error from "./views/Error";
 import RequireAuth from "./components/RequireAuth";
 import useAuth from './hooks/useAuth';
 import Layout from './components/Layout';
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+
+Sentry.init({
+    dsn: import.meta.env.VITE_APP_SENTRY,
+    integrations: [
+        new BrowserTracing({
+            routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+                useEffect,
+                useLocation,
+                useNavigationType,
+                createRoutesFromElements,
+                matchRoutes,
+            ),
+        }),
+    ],
+    tracesSampleRate: 1.0,
+});
 
 function App() {
     const { user } = useAuth();
-
-    console.log(user);
-    
-    const router = createBrowserRouter(
+    const sentryCreateBrowserRouter = Sentry.wrapCreateBrowserRouter(
+        createBrowserRouter
+    );
+      
+    const router = sentryCreateBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<Layout />} errorElement={<Error />}>
                 <Route path="/" element={<Home />} />

@@ -1,18 +1,23 @@
-import { Form, Link, useNavigate, useLocation } from 'react-router-dom';
+import { 
+    Form, 
+    Link, 
+    useNavigate,
+    useLocation
+} from 'react-router-dom';
 import { useState } from 'react';
 import { createErrorsObject } from '../helpers/errorhandling';
+import useAuth from '../hooks/useAuth';
 import axios from 'axios';
 import * as z from 'zod';
-import useAuth from '../hooks/useAuth';
 
 const Login = () => {
 
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const auth = useAuth();
+    const { signin } = useAuth();
 
-    const from = location.state?.from?.pathname || "/";
+    // const from = location.state?.from?.pathname || "/";
 
     const schema = z
         .object({
@@ -35,14 +40,13 @@ const Login = () => {
                     email: validated.data.email,
                     password: validated.data.password
                 });
-                auth.signin(response.data, () => navigate(from));
+                signin(response.data, () => navigate("/"));
             } catch (error) {
                 setErrors({ status: error.response.data });
             }
         } else {
             setErrors(createErrorsObject(validated.error));
         }
-
     };
 
     return (

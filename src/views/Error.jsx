@@ -3,7 +3,7 @@ import {
     isRouteErrorResponse,
     Link, 
     useNavigate, 
-    Form 
+    Form
 } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -14,10 +14,12 @@ const Error = () => {
     useEffect(() => {
         if (isRouteErrorResponse(error) && error.status === 401) {
             setTimeout(() => {
-                navigate("/login");
-            }, 5000);
+                navigate("/login", { state: { from: { pathname: error.data.from }}});
+            }, 1000);
         }
     }, [error]);
+
+    console.log(error);
 
     if (isRouteErrorResponse(error) && error.status === 404) {
         console.log(error.status);

@@ -1,4 +1,9 @@
-import { useLoaderData, useActionData, Form } from "react-router-dom";
+import { 
+    useLoaderData, 
+    useActionData, 
+    Form,
+    json
+} from "react-router-dom";
 import axios from "axios";
 import * as z from "zod";
 import { createErrorsObject } from "../helpers/errorhandling";
@@ -12,7 +17,7 @@ export const secretsLoader = (user) => async () => {
         });
         return await response.data;
     } catch (error) {
-        throw new Response("no user", { status: 401 });
+        throw json({ from: "/secrets" }, { status: 401 });
     }
 };
 

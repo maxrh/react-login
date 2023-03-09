@@ -9,12 +9,16 @@ import { createErrorsObject } from "../helpers/errorhandling";
 import { toast } from "react-toastify";
 
 export const profileLoader = (user) => async () => {
-    let response = await axios.get("http://localhost:4000/users/" + user.id, {
-        headers: {
-            Authorization: `Bearer ${user.accessToken}`,
-        },
-    });
-    return await response.data;
+    try {
+        let response = await axios.get("http://localhost:4000/users/" + user.id, {
+            headers: { 
+                Authorization: `Bearer ${user.accessToken}`,
+            },
+        });
+        return await response.data;
+    } catch (error) {
+        throw new Response("no user", { status: 401 });
+    }
 };
 
 export const profileAction = (user) => async ({ request }) => {
